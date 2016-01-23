@@ -1,17 +1,40 @@
 from flask import Flask
 app = Flask(__name__)
-
+import json
+from flask import request, jsonify
 @app.route("/add_alert/")
 def add_alert():
-    return "Hello World!"
+    with open('data.json', 'r') as f:
+        data = json.loads(f.read())
+        data.append({"id": random_id, "email": request.args.get('email'), "url": request.args.get('url'), "confirmed": False})
+    with open('data.json', 'w') as f:
+        f.write(json.dumps(f.read()))
+    return jsonify(success=True)        
+    
     
 @app.route("/confirm_alert/")
 def confirm_alert():
-    return "Hello World!"
+    with open('data.json', 'r') as f:
+        data = json.loads(f.read())
+        for row in data:
+            if row['id'] = request.args.get('id'):
+                row['confirmed'] = True
+                break
+    with open('data.json', 'w') as f:
+        f.write(json.dumps(f.read()))
+    return jsonify(success=True)     
     
 @app.route("/delete_alert/")
 def delete_alert():
-    return "Hello World!"
+    with open('data.json', 'r') as f:
+        data = json.loads(f.read())
+        for i, row in enumerate(data):
+            if row['id'] = request.args.get('id'):
+                del data[i]
+                break
+    with open('data.json', 'w') as f:
+        f.write(json.dumps(f.read()))
+    return jsonify(success=True)     
 
 if __name__ == "__main__":
     app.run()
