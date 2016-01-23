@@ -9,6 +9,20 @@ def add_alert():
         data.append({"id": random_id, "email": request.args.get('email'), "url": request.args.get('url'), "confirmed": False})
     with open('data.json', 'w') as f:
         f.write(json.dumps(f.read()))
+    import sendgrid
+    with open('configuration.json', 'r') as f:
+        configuration = json.loads(f.read())
+        username = configuration['sendgrid_username']
+        password = configuration['sendgrid_password']
+    sg = sendgrid.SendGridClient(username=username, password=password)
+    
+    message = sendgrid.Mail()
+    message.add_to(request.args.get('email'))
+    message.set_subject('Example')
+    message.set_html('Body')
+    message.set_text('Body')
+    message.set_from('Doe John <doe@email.com>')
+    status, msg = sg.send(message)
     return jsonify(success=True)        
     
     
