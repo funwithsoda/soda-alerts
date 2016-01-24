@@ -1,5 +1,5 @@
 import requests
-import sleep
+import time
 with open('configuration.json', 'r') as f:
     configuration = json.loads(f.read())
 while True:
