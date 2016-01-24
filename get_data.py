@@ -1,6 +1,7 @@
 import requests
 import time
 import json
+import sendgrid
 with open('configuration.json', 'r') as f:
     configuration = json.loads(f.read())
 while True:
@@ -37,7 +38,7 @@ while True:
             message = sendgrid.Mail()
             message.add_to(alert_job['email'])
             message.set_subject('Alert for '+alert_job['url'])
-            message.set_html(html_of_data+'<a href="'+configuration['domain']+'/delete_alert/?id='+random_id+'">Click here to delete alert</a>')
+            message.set_html(html_of_data+'<a href="'+configuration['domain']+'/delete_alert/?id='+alert_job["id"]+'">Click here to delete alert</a>')
             message.set_from('Doe John <doe@email.com>')
             status, msg = sg.send(message)
     with open('data.json', 'w') as f:
