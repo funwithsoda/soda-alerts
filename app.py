@@ -48,7 +48,7 @@ def delete_alert():
     with open('data.json', 'r') as f:
         data = json.loads(f.read())
         for i, row in enumerate(data):
-            if row['id'] = request.args.get('id'):
+            if row['id'] == request.args.get('id'):
                 del data[i]
                 break
     with open('data.json', 'w') as f:
