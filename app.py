@@ -8,7 +8,11 @@ def add_alert():
     random_id = uuid.uuid4()
     with open('data.json', 'r') as f:
         data = json.loads(f.read())
-        data.append({"id": random_id, "email": request.args.get('email'), "url": request.args.get('url'), "confirmed": False})
+        if '?' in request.args.get('url'):
+            url = request.args.get('url')
+        else:
+            url = request.args.get('url') + '?'
+        data.append({"id": random_id, "email": request.args.get('email'), "url": url, "confirmed": False})
     with open('data.json', 'w') as f:
         f.write(json.dumps(data))
     import sendgrid
