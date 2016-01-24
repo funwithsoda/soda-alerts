@@ -28,7 +28,7 @@ while True:
             
             username = configuration['sendgrid_username']
             password = configuration['sendgrid_password']
-            sg = sendgrid.SendGridClient(username=username, password=password)
+            sg = sendgrid.SendGridClient(username, password)
         
             message = sendgrid.Mail()
             message.add_to(alert_job['email'])
