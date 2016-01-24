@@ -9,7 +9,7 @@ if not 'data.json' in os.listdir('.'):
         f.write(json.dumps([]))
 @app.route("/add_alert/")
 def add_alert():
-    random_id = uuid.uuid4()
+    random_id = str(uuid.uuid4())
     with open('data.json', 'r') as f:
         data = json.loads(f.read())
         if '?' in request.args.get('url'):
