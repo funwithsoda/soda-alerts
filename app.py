@@ -48,7 +48,7 @@ def delete_alert():
                 del data[i]
                 break
     with open('data.json', 'w') as f:
-        f.write(json.dumps(f.read()))
+        f.write(json.dumps(data))
     return jsonify(success=True)     
 
 if __name__ == "__main__":
