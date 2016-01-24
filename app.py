@@ -10,7 +10,7 @@ def add_alert():
         data = json.loads(f.read())
         data.append({"id": random_id, "email": request.args.get('email'), "url": request.args.get('url'), "confirmed": False})
     with open('data.json', 'w') as f:
-        f.write(json.dumps(f.read()))
+        f.write(json.dumps(data))
     import sendgrid
     with open('configuration.json', 'r') as f:
         configuration = json.loads(f.read())
