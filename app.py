@@ -2,7 +2,11 @@ from flask import Flask
 app = Flask(__name__)
 import json
 import uuid
+import os
 from flask import request, jsonify
+if not 'data.json' in os.listdir('.'):
+    with open('data.json', 'w') as f:
+        f.write(json.dumps([]))
 @app.route("/add_alert/")
 def add_alert():
     random_id = uuid.uuid4()
