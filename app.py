@@ -36,7 +36,7 @@ def confirm_alert():
     with open('data.json', 'r') as f:
         data = json.loads(f.read())
         for row in data:
-            if row['id'] = request.args.get('id'):
+            if row['id'] == request.args.get('id'):
                 row['confirmed'] = True
                 break
     with open('data.json', 'w') as f:
