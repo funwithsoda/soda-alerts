@@ -6,7 +6,7 @@ import os
 from flask import request, jsonify
 if not 'data.json' in os.listdir('.'):
     with open('data.json', 'w') as f:
-        f.write(json.dumps([]))
+        f.write('[]')
 @app.route("/add_alert/")
 def add_alert():
     random_id = str(uuid.uuid4())
