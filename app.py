@@ -45,7 +45,7 @@ def confirm_alert():
             row['confirmed'] = True
             break
     with open('data.json', 'w') as f:
-        f.write(json.dumps(f.read()))
+        f.write(json.dumps(data))
     return jsonify(success=True)     
     
 @app.route("/delete_alert/")
