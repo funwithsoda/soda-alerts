@@ -17,7 +17,7 @@ while True:
             if not the_data:
                 continue
             html_of_data = '<table>'
-            keys = sorted(the_data.keys())
+            keys = sorted(the_data[0].keys())
             html_of_data += '<tr>'
             for key in keys:
                 html_of_data += '<th>%s</th>' % (key)
