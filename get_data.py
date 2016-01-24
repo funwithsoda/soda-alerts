@@ -9,11 +9,11 @@ while True:
     for alert_job in alert_jobs:
         if not 'last_created_at' in alert_job and alert_job['confirmed']:
             result = requests.get('%s&$limit=1&$select=:created_at&$order=:created_at DESC&$$app_token=%s' % (alert_job["url"], configuration['socrata_app_token'])).json()
-            alert_job['last_created_at'] = result[':created_at']
+            alert_job['last_created_at'] = result[0][':created_at']
         elif alert_job['confirmed']:
             the_data = requests.get('%s&$where=:created_at%%20>%%20"%s"&$app_token=%s' % (alert_job["url"], alert_job['last_created_at'], configuration['socrata_app_token'])).json()
             result = requests.get('%s&$limit=1&$select=:created_at&$order=:created_at DESC&$$app_token=%s' % (alert_job["url"], configuration['socrata_app_token'])).json()
-            alert_job['last_created_at'] = result[':created_at']
+            alert_job['last_created_at'] = result[0][':created_at']
             if not the_data:
                 continue
             html_of_data = '<table>'
