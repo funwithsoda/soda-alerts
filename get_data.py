@@ -24,6 +24,7 @@ while True:
             html_of_data += '</tr>'
             for row in the_data:
                 html_of_data += '<tr>'
+                print row
                 for key in keys:
                     html_of_data += '<td>%s</td>' % (row[key])
                 html_of_data += '</tr>'
