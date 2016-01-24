@@ -18,6 +18,7 @@ def add_alert():
         url = request.args.get('url') + '?'
     data.append({"id": random_id, "email": request.args.get('email'), "url": url, "confirmed": False})
     with open('data.json', 'w') as f:
+        print 'data', data
         f.write(json.dumps(data))
     import sendgrid
     with open('configuration.json', 'r') as f:
