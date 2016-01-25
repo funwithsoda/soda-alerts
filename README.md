@@ -1,5 +1,5 @@
 # soda-alerts
-This is a REST API for creating and managing alerts of new results for queries to Socrata datasets. The supported methods for getting alerts are email and SMS. Future methods include webhooks, websockets, and Twitter. 
+This is a REST API for creating and managing alerts of new results for queries to Socrata datasets. The supported method for getting alerts is email. Future methods include SMS, webhooks, websockets, and Twitter. 
 
 To make this lightweight I decided against using a real database and CRON.
 
