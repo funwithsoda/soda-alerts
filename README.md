@@ -1,16 +1,25 @@
 # soda-alerts
-Allows one to get email alerts using the Socrata Open Data API. Other hooks to consider adding are Twitter Bots and Web Hooks and Websockets.
+This is a REST API for creating and managing alerts of new results for queries to Socrata datasets. The supported methods for getting alerts are email and SMS. Future methods include webhooks, websockets, and Twitter. 
 
 To make this lightweight I decided against using a real database and CRON.
 
-Install:
+## Install
 
-1. Copy configuration_example.json to configuration.json and fill in the details
-2. Run app.py and get_data.py
+1. Copy config_example.json to configuration.json and fill in the details
+2. Run `pip install -r requirements.txt`
+3. Run `python app.py` and `python get_data.py`
 
-Example:
+## Usage
+
+Send a get request to `/add_alert/` with email address and the Socrata API url. You need to encode the URL if it has parameters like  `https://data.seattle.gov/resource/grwu-wqtk.json?type=Aid Response` E.g. `https%3A//data.seattle.gov/resource/grwu-wqtk.json%3Ftype%3DAid%20Response`
+
+## Examples
+
+### Alert of any new Seattle Fire Department response incidents
 
 ```
 import requests
 requests.get('http://localhost:5000/add_alert/?email=tim@insideyourgovernment.com&url=https://data.seattle.gov/resource/grwu-wqtk.json')
 ```
+
+### Alert of any new Seattle Fire Department fire calls 
