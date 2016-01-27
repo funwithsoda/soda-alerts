@@ -18,7 +18,11 @@ while True:
             if not the_data:
                 continue
             html_of_data = '<table>'
-            keys = sorted(the_data[0].keys())
+            keys = []
+            for row in the_data[0]:
+                for key in row.keys():
+                    if not key in keys:
+                        keys.append(key)
             html_of_data += '<tr>'
             for key in keys:
                 html_of_data += '<th>%s</th>' % (key)
@@ -27,7 +31,10 @@ while True:
                 html_of_data += '<tr>'
                 print row
                 for key in keys:
-                    html_of_data += '<td>%s</td>' % (row[key])
+                    value = ''
+                    if row.get(key):
+                        value = row.get(key)
+                    html_of_data += '<td>%s</td>' % (value)
                 html_of_data += '</tr>'
             html_of_data += '</table>'
             
