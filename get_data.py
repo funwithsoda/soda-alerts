@@ -23,6 +23,18 @@ def get_last_created_at(url):
         url = remove_dollar_component(url, component)
     return requests.get('%s&$limit=1&$select=:created_at&$order=:created_at%%20DESC&$$app_token=%s' % (url, configuration['socrata_app_token'])).json()
 
+def send_email(to, subject, html):
+    username = configuration['sendgrid_username']
+    password = configuration['sendgrid_password']
+    sg = sendgrid.SendGridClient(username, password)
+
+    message = sendgrid.Mail()
+    message.add_to(to)
+    message.set_subject(subject)
+    message.set_html(html)
+    message.set_from('Doe John <doe@email.com>')
+    status, msg = sg.send(message)
+
 def process_alert_job():
     if not 'last_created_at' in alert_job and alert_job['confirmed']:
         result = get_last_created_at(alert_job['url'])
@@ -63,17 +75,11 @@ def process_alert_job():
                 html_of_data += '<td>%s</td>' % (value)
             html_of_data += '</tr>'
         html_of_data += '</table>'
-        
-        username = configuration['sendgrid_username']
-        password = configuration['sendgrid_password']
-        sg = sendgrid.SendGridClient(username, password)
-    
-        message = sendgrid.Mail()
-        message.add_to(alert_job['email'])
-        message.set_subject('Alert for '+alert_job['url'])
-        message.set_html(html_of_data+'<a href="'+configuration['domain']+'/delete_alert/?id='+alert_job["id"]+'">Click here to delete alert</a>')
-        message.set_from('Doe John <doe@email.com>')
-        status, msg = sg.send(message)
+        to = alert_job['email']
+        delete_alert_html = '<a href="'+configuration['domain']+'/delete_alert/?id='+alert_job["id"]+'">Click here to delete alert</a>'
+        html = html_of_data+delete_alert_html
+        subject = 'Alert for '+alert_job['url']
+        send_email(to, subject, html)
     return alert_job
 
 def process_alert_jobs():
