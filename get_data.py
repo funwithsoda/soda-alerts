@@ -23,7 +23,7 @@ def get_last_created_at(url):
         url = remove_dollar_component(url, component)
     return requests.get('%s&$limit=1&$select=:created_at&$order=:created_at%%20DESC&$$app_token=%s' % (url, configuration['socrata_app_token'])).json()
 
-while True:
+def process_alert_jobs():
     with open('data.json', 'r') as f:
         alert_jobs = json.loads(f.read())
     for alert_job in alert_jobs:
@@ -79,4 +79,7 @@ while True:
             status, msg = sg.send(message)
     with open('data.json', 'w') as f:
         f.write(json.dumps(alert_jobs))
+
+while True:
+    process_alert_jobs()
     time.sleep(60*5)
