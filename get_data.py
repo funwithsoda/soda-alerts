@@ -57,7 +57,7 @@ def process_alert_job():
         </style>
         <table>"""
         keys = []
-        for row in the_data[0]:
+        for row in the_data:
             for key in row.keys():
                 if not key in keys:
                     keys.append(key)
