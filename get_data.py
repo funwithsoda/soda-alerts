@@ -44,7 +44,7 @@ def process_alert_job():
         result = get_last_created_at(alert_job['url'])
         alert_job['last_created_at'] = result[0][':created_at']
         if not the_data:
-            continue
+            return alert_job
         html_of_data = """
         <style>
         td, th {
