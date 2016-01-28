@@ -7,15 +7,20 @@ import re
 with open('configuration.json', 'r') as f:
     configuration = json.loads(f.read())
 
-def get_last_created_at(url):
-    # remove $select and $limit
+def remove_dollar_component(url, component):
     if '&' in url:
-        m = re.search('(?P<select>\$select=.*&)', url)
+        m = re.search('(?P<select>\$%s=.*&)' % (component), url)
     else:
-        m = re.search('(?P<select>\$select=.*)', url)
+        m = re.search('(?P<select>\$%s=.*)' % (component), url)
     if m:
         what_to_replace = m.group('select')
         url = url.replace(what_to_replace, '')
+    return url
+
+def get_last_created_at(url):
+    # remove $select, $limit, and $order
+    for component in ['select', 'limit', 'order']:
+        url = remove_dollar_component(url, component)
     return requests.get('%s&$limit=1&$select=:created_at&$order=:created_at%%20DESC&$$app_token=%s' % (url, configuration['socrata_app_token'])).json()
 
 while True:
