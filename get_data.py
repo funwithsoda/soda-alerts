@@ -17,7 +17,17 @@ while True:
             alert_job['last_created_at'] = result[0][':created_at']
             if not the_data:
                 continue
-            html_of_data = '<table>'
+            html_of_data = """
+            <style>
+            td, th {
+            border:1px solid #000;
+            margin:5px;
+            text-align:left;
+            vertical-align:top;
+            }
+            
+            </style>
+            <table>"""
             keys = []
             for row in the_data[0]:
                 for key in row.keys():
