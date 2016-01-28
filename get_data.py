@@ -35,7 +35,7 @@ def send_email(to, subject, html):
     message.set_from('Doe John <doe@email.com>')
     status, msg = sg.send(message)
 
-def process_alert_job():
+def process_alert_job(alert_job):
     if not 'last_created_at' in alert_job and alert_job['confirmed']:
         result = get_last_created_at(alert_job['url'])
         alert_job['last_created_at'] = result[0][':created_at']
