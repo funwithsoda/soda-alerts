@@ -2,18 +2,32 @@ import requests
 import time
 import json
 import sendgrid
+import re
+
 with open('configuration.json', 'r') as f:
     configuration = json.loads(f.read())
+
+def get_last_created_at(url):
+    # remove $select and $limit
+    if '&' in url:
+        m = re.search('(?P<select>\$select=.*&)', url)
+    else:
+        m = re.search('(?P<select>\$select=.*)', url)
+    if m:
+        what_to_replace = m.group('select')
+        url = url.replace(what_to_replace, '')
+    return requests.get('%s&$limit=1&$select=:created_at&$order=:created_at%%20DESC&$$app_token=%s' % (url, configuration['socrata_app_token'])).json()
+
 while True:
     with open('data.json', 'r') as f:
         alert_jobs = json.loads(f.read())
     for alert_job in alert_jobs:
         if not 'last_created_at' in alert_job and alert_job['confirmed']:
-            result = requests.get('%s&$limit=1&$select=:created_at&$order=:created_at DESC&$$app_token=%s' % (alert_job["url"], configuration['socrata_app_token'])).json()
+            result = get_last_created_at(alert_job['url'])
             alert_job['last_created_at'] = result[0][':created_at']
         elif alert_job['confirmed']:
             the_data = requests.get('%s&$where=:created_at%%20>%%20"%s"&$$app_token=%s' % (alert_job["url"], alert_job['last_created_at'], configuration['socrata_app_token'])).json()
-            result = requests.get('%s&$limit=1&$select=:created_at&$order=:created_at DESC&$$app_token=%s' % (alert_job["url"], configuration['socrata_app_token'])).json()
+            result = get_last_created_at(alert_job['url'])
             alert_job['last_created_at'] = result[0][':created_at']
             if not the_data:
                 continue
